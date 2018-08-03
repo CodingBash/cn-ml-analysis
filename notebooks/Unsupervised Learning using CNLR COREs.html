@@ -11766,7 +11766,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="c1">#source(&quot;https://bioconductor.org/biocLite.R&quot;)</span>
@@ -11776,6 +11776,149 @@ div#notebook {
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Warning message:
+&#34;package &#39;GenomicRanges&#39; was built under R version 3.4.4&#34;Loading required package: stats4
+Loading required package: BiocGenerics
+Loading required package: parallel
+
+Attaching package: &#39;BiocGenerics&#39;
+
+The following objects are masked from &#39;package:parallel&#39;:
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+
+The following objects are masked from &#39;package:stats&#39;:
+
+    IQR, mad, sd, var, xtabs
+
+The following objects are masked from &#39;package:base&#39;:
+
+    anyDuplicated, append, as.data.frame, cbind, colMeans, colnames,
+    colSums, do.call, duplicated, eval, evalq, Filter, Find, get, grep,
+    grepl, intersect, is.unsorted, lapply, lengths, Map, mapply, match,
+    mget, order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+    rbind, Reduce, rowMeans, rownames, rowSums, sapply, setdiff, sort,
+    table, tapply, union, unique, unsplit, which, which.max, which.min
+
+Loading required package: S4Vectors
+
+Attaching package: &#39;S4Vectors&#39;
+
+The following object is masked from &#39;package:base&#39;:
+
+    expand.grid
+
+Loading required package: IRanges
+Loading required package: GenomeInfoDb
+Warning message:
+&#34;package &#39;ggplot2&#39; was built under R version 3.4.4&#34;Warning message:
+&#34;package &#39;reshape&#39; was built under R version 3.4.4&#34;
+Attaching package: &#39;reshape&#39;
+
+The following objects are masked from &#39;package:S4Vectors&#39;:
+
+    expand, rename
+
+Warning message:
+&#34;package &#39;reshape2&#39; was built under R version 3.4.4&#34;
+Attaching package: &#39;reshape2&#39;
+
+The following objects are masked from &#39;package:reshape&#39;:
+
+    colsplit, melt, recast
+
+Loading required package: ade4
+Warning message:
+&#34;package &#39;ade4&#39; was built under R version 3.4.4&#34;
+Attaching package: &#39;ade4&#39;
+
+The following object is masked from &#39;package:GenomicRanges&#39;:
+
+    score
+
+The following object is masked from &#39;package:IRanges&#39;:
+
+    score
+
+The following object is masked from &#39;package:BiocGenerics&#39;:
+
+    score
+
+Loading required package: RColorBrewer
+Loading required package: gplots
+Warning message:
+&#34;package &#39;gplots&#39; was built under R version 3.4.4&#34;
+Attaching package: &#39;gplots&#39;
+
+The following object is masked from &#39;package:IRanges&#39;:
+
+    space
+
+The following object is masked from &#39;package:S4Vectors&#39;:
+
+    space
+
+The following object is masked from &#39;package:stats&#39;:
+
+    lowess
+
+Loading required package: scatterplot3d
+Warning message:
+&#34;package &#39;scatterplot3d&#39; was built under R version 3.4.4&#34;Warning message:
+&#34;package &#39;cluster&#39; was built under R version 3.4.4&#34;Warning message:
+&#34;package &#39;spatstat&#39; was built under R version 3.4.4&#34;Loading required package: spatstat.data
+Warning message:
+&#34;package &#39;spatstat.data&#39; was built under R version 3.4.4&#34;Loading required package: nlme
+
+Attaching package: &#39;nlme&#39;
+
+The following object is masked from &#39;package:IRanges&#39;:
+
+    collapse
+
+Loading required package: rpart
+
+spatstat 1.56-0       (nickname: &#39;Bondi Tram&#39;) 
+For an introduction to spatstat, type &#39;beginner&#39; 
+
+
+Attaching package: &#39;spatstat&#39;
+
+The following object is masked from &#39;package:cluster&#39;:
+
+    volume
+
+The following object is masked from &#39;package:gplots&#39;:
+
+    col2hex
+
+The following object is masked from &#39;package:ade4&#39;:
+
+    disc
+
+The following object is masked from &#39;package:GenomicRanges&#39;:
+
+    shift
+
+The following objects are masked from &#39;package:IRanges&#39;:
+
+    reflect, shift
+
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -11791,7 +11934,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="c1">#</span>
@@ -11818,14 +11961,14 @@ samples <span class="o">&lt;-</span> load_samples<span class="p">(</span>classes
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="c1">#</span>
 <span class="c1"># Retrieve CORE features</span>
 <span class="c1">#</span>
 <span class="kp">setwd</span><span class="p">(</span><span class="s">&quot;~/Documents/Git-Projects/Git-Research-Projects/hN_core_artifacts&quot;</span><span class="p">)</span>
-ADcores <span class="o">&lt;-</span> retrieveCores<span class="p">(</span><span class="s">&quot;./hT_output/prev_run_7_30_2018_1/selectedCores/ADselectedCoresBP.bed&quot;</span><span class="p">)</span> <span class="c1"># BED file of amplification recurrent regions</span>
+ADcores <span class="o">&lt;-</span> retrieveCores<span class="p">(</span><span class="s">&quot;./hT_output/prev_run_7_30_2018_1/selectedCores/ADselectedCoresBP - hN31.bed&quot;</span><span class="p">)</span> <span class="c1"># BED file of amplification recurrent regions</span>
 </pre></div>
 
 </div>
@@ -11835,7 +11978,7 @@ ADcores <span class="o">&lt;-</span> retrieveCores<span class="p">(</span><span 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kp">head</span><span class="p">(</span>ADcores<span class="p">)</span>
@@ -11883,7 +12026,7 @@ ADcores <span class="o">&lt;-</span> retrieveCores<span class="p">(</span><span 
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kp">setwd</span><span class="p">(</span><span class="s">&quot;~/Documents/Git-Projects/Git-Research-Projects/drug-response-prediction&quot;</span><span class="p">)</span>
@@ -11897,7 +12040,7 @@ aucData <span class="o">&lt;-</span> <span class="kp">readRDS</span><span class=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kp">head</span><span class="p">(</span>aucData<span class="o">$</span>Gemcitabine<span class="p">)</span>
@@ -12025,7 +12168,7 @@ aucData <span class="o">&lt;-</span> <span class="kp">readRDS</span><span class=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="c1">#</span>
@@ -12133,6 +12276,45 @@ training_set<span class="o">$</span><span class="kt">matrix</span> <span class="
 [1] &#34;Retrieving FACETS SNPs file: output/FACETS_Reference_hN31_7_28_18_2/Sample_hT98/hT98--hN31.procSample-jseg.cnv.facets.v0.5.2.txt&#34;
 </pre>
 </div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">head</span><span class="p">(</span>training_set<span class="o">$</span>melted<span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+
+<div class="output_html rendered_html output_subarea ">
+<table>
+<thead><tr><th></th><th scope=col>cnlr</th><th scope=col>coreId</th><th scope=col>sampleId</th></tr></thead>
+<tbody>
+	<tr><th scope=row>1</th><td> 0.02408144</td><td>1          </td><td>hF2        </td></tr>
+	<tr><th scope=row>4</th><td>-0.07483252</td><td>4          </td><td>hF2        </td></tr>
+	<tr><th scope=row>6</th><td> 0.16591789</td><td>6          </td><td>hF2        </td></tr>
+	<tr><th scope=row>8</th><td>-0.07379880</td><td>8          </td><td>hF2        </td></tr>
+	<tr><th scope=row>9</th><td>-0.80038254</td><td>9          </td><td>hF2        </td></tr>
+	<tr><th scope=row>10</th><td> 0.39579720</td><td>10         </td><td>hF2        </td></tr>
+</tbody>
+</table>
+
+</div>
+
 </div>
 
 </div>

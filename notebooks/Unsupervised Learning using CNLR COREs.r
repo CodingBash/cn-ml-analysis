@@ -15,7 +15,7 @@ samples <- load_samples(classes = c("T","F", "M"), sampleList = "sampleList.csv"
 # Retrieve CORE features
 #
 setwd("~/Documents/Git-Projects/Git-Research-Projects/hN_core_artifacts")
-ADcores <- retrieveCores("./hT_output/prev_run_7_30_2018_1/selectedCores/ADselectedCoresBP.bed") # BED file of amplification recurrent regions
+ADcores <- retrieveCores("./hT_output/prev_run_7_30_2018_1/selectedCores/ADselectedCoresBP - hN31.bed") # BED file of amplification recurrent regions
 
 head(ADcores)
 
@@ -34,6 +34,8 @@ head(aucData$Oxaliplatin)
 setwd("~/Documents/Git-Projects/Git-Research-Projects/FACETS_write_files")
 training_set <- retrieveTrainingSet(loaded_samples = samples, ADcores = ADcores, sample_subdir = "/", reference = "hN31", dir = "output/FACETS_Reference_hN31_7_28_18_2/")
 training_set$matrix <- attachLabelsToSet(matrix_training_set = training_set$matrix, labelData = aucData)
+
+head(training_set$melted)
 
 options(repr.plot.width=15, repr.plot.height=15)
 visualizeUnclusteredHeatmap(training_set$melted)
