@@ -11965,13 +11965,7 @@ samples <span class="o">&lt;-</span> load_samples<span class="p">(</span>classes
 <div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-r"><pre><span></span><span class="c1">#</span>
-<span class="c1"># Retrieve CORE features</span>
-<span class="c1">#</span>
-<span class="kp">setwd</span><span class="p">(</span><span class="s">&quot;~/Documents/Git-Projects/Git-Research-Projects/cnprep_cores&quot;</span><span class="p">)</span>
-ADcores <span class="o">&lt;-</span> retrieveCores<span class="p">(</span><span class="s">&quot;./hT_output/prev_run_7_27_2018_8_2/selectedCores/ADselectedCoresBP.bed&quot;</span><span class="p">)</span> <span class="c1"># BED file of recurrent regions</span>
-Acores <span class="o">&lt;-</span> retrieveCores<span class="p">(</span><span class="s">&quot;./hT_output/prev_run_7_27_2018_8_2/selectedCores/AselectedCoresBP.bed&quot;</span><span class="p">)</span> <span class="c1"># BED file of recurrent regions</span>
-Dcores <span class="o">&lt;-</span> retrieveCores<span class="p">(</span><span class="s">&quot;./hT_output/prev_run_7_27_2018_8_2/selectedCores/DselectedCoresBP.bed&quot;</span><span class="p">)</span> <span class="c1"># BED file of recurrent regions</span>
+<div class=" highlight hl-r"><pre><span></span>
 </pre></div>
 
 </div>
@@ -12215,6 +12209,15 @@ aucData <span class="o">&lt;-</span> <span class="kp">readRDS</span><span class=
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="c1">#</span>
+<span class="c1"># Retrieve CORE features</span>
+<span class="c1">#</span>
+<span class="kp">setwd</span><span class="p">(</span><span class="s">&quot;~/Documents/Git-Projects/Git-Research-Projects/cnprep_cores&quot;</span><span class="p">)</span>
+ADcores <span class="o">&lt;-</span> retrieveCores<span class="p">(</span><span class="s">&quot;./hT_output/prev_run_7_27_2018_8_2/selectedCores/ADselectedCoresBP.bed&quot;</span><span class="p">)</span> <span class="c1"># BED file of recurrent regions</span>
+Acores <span class="o">&lt;-</span> retrieveCores<span class="p">(</span><span class="s">&quot;./hT_output/prev_run_7_27_2018_8_2/selectedCores/AselectedCoresBP.bed&quot;</span><span class="p">)</span> <span class="c1"># BED file of recurrent regions</span>
+Dcores <span class="o">&lt;-</span> retrieveCores<span class="p">(</span><span class="s">&quot;./hT_output/prev_run_7_27_2018_8_2/selectedCores/DselectedCoresBP.bed&quot;</span><span class="p">)</span> <span class="c1"># BED file of recurrent regions</span>
+
+
+<span class="c1">#</span>
 <span class="c1"># Retrieve training set</span>
 <span class="c1">#</span>
 <span class="kp">setwd</span><span class="p">(</span><span class="s">&quot;~/Documents/Git-Projects/Git-Research-Projects/FACETS_write_files&quot;</span><span class="p">)</span>

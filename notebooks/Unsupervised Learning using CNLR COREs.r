@@ -12,13 +12,6 @@ source("unsupervisedLearning.r")
 #
 samples <- load_samples(classes = c("T","F", "M"), sampleList = "./resources/sampleList.csv")
 
-#
-# Retrieve CORE features
-#
-setwd("~/Documents/Git-Projects/Git-Research-Projects/cnprep_cores")
-ADcores <- retrieveCores("./hT_output/prev_run_7_27_2018_8_2/selectedCores/ADselectedCoresBP.bed") # BED file of recurrent regions
-Acores <- retrieveCores("./hT_output/prev_run_7_27_2018_8_2/selectedCores/AselectedCoresBP.bed") # BED file of recurrent regions
-Dcores <- retrieveCores("./hT_output/prev_run_7_27_2018_8_2/selectedCores/DselectedCoresBP.bed") # BED file of recurrent regions
 
 
 head(ADcores)
@@ -33,6 +26,15 @@ head(aucData$Paclitaxel)
 head(aucData$`SN-38`)
 head(aucData$`5-FU`)
 head(aucData$Oxaliplatin)
+
+#
+# Retrieve CORE features
+#
+setwd("~/Documents/Git-Projects/Git-Research-Projects/cnprep_cores")
+ADcores <- retrieveCores("./hT_output/prev_run_7_27_2018_8_2/selectedCores/ADselectedCoresBP.bed") # BED file of recurrent regions
+Acores <- retrieveCores("./hT_output/prev_run_7_27_2018_8_2/selectedCores/AselectedCoresBP.bed") # BED file of recurrent regions
+Dcores <- retrieveCores("./hT_output/prev_run_7_27_2018_8_2/selectedCores/DselectedCoresBP.bed") # BED file of recurrent regions
+
 
 #
 # Retrieve training set

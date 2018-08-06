@@ -5,7 +5,7 @@
 
 # ### Import Python source code
 
-# In[26]:
+# In[83]:
 
 
 """
@@ -51,26 +51,12 @@ import math
 
 
 
-# ### Define method to split training and testing set
-
-# In[27]:
-
-# TODO: Manipulate test_ratio
-def split_train_test(training_set, test_ratio = 0.33):
-    row_count = training_set.shape[0]
-    shuffled_indices = np.random.permutation(row_count)
-    test_set_size = int(test_ratio * row_count)
-    test_indices = shuffled_indices[:test_set_size]
-    train_indices = shuffled_indices[test_set_size:]
-    return training_set.iloc[train_indices], training_set.iloc[test_indices]
-
-
 # ### Load training set matrix
 
-# In[54]:
+# In[122]:
 
 #labeled_matrix_training_set = pd.read_csv("../mlOutput/geneTrainingSet_8_5_2018_1.csv") # Cancer gene feature set
-#labeled_matrix_training_set = pd.read_csv("../mlOutput/coreTrainingSet_8_3_2018_1.csv") # Slicing features on A and D combined
+#labeled_matrix_training_set = pd.read_csv("../mlOutput/slicingTrainingSet_8_3_2018_1.csv") # Slicing features on A and D combined
 labeled_matrix_training_set = pd.read_csv("../mlOutput/coreTrainingSet_8_2_2018_2.csv") # Segment features on A and D combined
 #labeled_matrix_training_set = pd.read_csv("../mlOutput/coreTrainingSet_8_2_2018_1.csv") # Segment features on A and D merged
 #labeled_matrix_training_set.columns.values[0] = "sampleId"
@@ -78,28 +64,28 @@ labeled_matrix_training_set = labeled_matrix_training_set.drop([labeled_matrix_t
 labels = list(range(0,5))
 
 
-# In[55]:
+# In[123]:
 
 display(labeled_matrix_training_set.head(25))
 
 
-# In[44]:
+# In[124]:
 
 X = labeled_matrix_training_set.copy().drop(labeled_matrix_training_set.columns[labels], axis = 1)
 y = labeled_matrix_training_set.copy()[labeled_matrix_training_set.columns[labels]]
 
 
-# In[45]:
+# In[125]:
 
 display(X.head())
 
 
-# In[46]:
+# In[126]:
 
 display(y.head(15))
 
 
-# In[47]:
+# In[127]:
 
 from sklearn.model_selection import train_test_split
 
@@ -107,13 +93,13 @@ all_X_TRAIN, all_X_TEST, all_Y_TRAIN, all_Y_TEST = train_test_split(X, y, test_s
 # TODO: train_test must be split on amount of NAs as well!
 
 
-# In[48]:
+# In[128]:
 
 display(all_X_TRAIN.head())
 display(all_Y_TRAIN.head())
 
 
-# In[49]:
+# In[115]:
 
 display(all_X_TEST.head())
 display(all_Y_TEST.head())
@@ -121,7 +107,7 @@ display(all_Y_TEST.head())
 
 # ## Visualize ML Results
 
-# In[50]:
+# In[116]:
 
 def abline(slope, intercept):
     """Plot a line from slope and intercept"""
@@ -131,18 +117,18 @@ def abline(slope, intercept):
     plt.plot(x_vals, y_vals, '--')
 
 
-# In[51]:
+# In[129]:
 
 def retrieve_pipelines(model_name, ml_model):
     Ypipeline = Pipeline([
      ('imputer', Imputer(axis=0,strategy="median")),
-     ('scaler', StandardScaler()),
+     #('scaler', StandardScaler()),
     #('scaler', MinMaxScaler())
     ])
 
     XYpipeline = Pipeline([
             ('imputer', Imputer(axis=0,strategy="median")),
-            ('scaler', StandardScaler()),
+            #('scaler', StandardScaler()),
             #('scaler', MinMaxScaler()),
             #("pca", decomposition.PCA(n_components=10)),
             (model_name,  ml_model)
@@ -169,7 +155,7 @@ def train_and_test(Ypipeline, XYpipeline, X_TRAIN, X_TEST, this_y_train, this_y_
     y_test_tr = Ypipeline.transform(this_y_test)
     y_prediction = XYpipeline.predict(X_TEST)
 
-    y_prediction = Ypipeline.named_steps['scaler'].inverse_transform(y_prediction)
+    #y_prediction = Ypipeline.named_steps['scaler'].inverse_transform(y_prediction)
     y_prediction = imputer_inverse_transform(this_y_test, y_prediction)
 
     y_test_np = this_y_test
@@ -206,13 +192,13 @@ def cv_score(XYpipeline, X_TRAIN, this_y_train_tr):
     return scores
 
 
-# ### Visualize ML results using Linear Regression
+# ### Visualize ML results using Ridge Regression
 
-# In[52]:
+# In[132]:
 
 for label in labels:
     X_nonNA, y_nonNA = remove_NAs(X, y, label)
-    X_TRAIN, X_TEST, Y_TRAIN, Y_TEST = train_test_split(X_nonNA, y_nonNA, test_size=0.20)
+    X_TRAIN, X_TEST, Y_TRAIN, Y_TEST = train_test_split(X_nonNA, y_nonNA, test_size=0.15)
     
     display_set(X_TRAIN, X_TEST, Y_TRAIN, Y_TEST)
         
@@ -237,7 +223,7 @@ for label in labels:
 
 # ### Visualize ML results using Random Forest Regressor
 
-# In[41]:
+# In[131]:
 
 for label in labels:
     X_nonNA, y_nonNA = remove_NAs(X, y, label)
@@ -266,7 +252,7 @@ for label in labels:
 
 # ### Bootstrap Regression Model
 
-# In[39]:
+# In[133]:
 
 for label in labels:
     X_nonNA, y_nonNA = remove_NAs(X, y, label)
