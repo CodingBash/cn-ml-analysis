@@ -5,7 +5,7 @@
 
 # ### Import Python source code
 
-# In[52]:
+# In[26]:
 
 
 """
@@ -53,7 +53,7 @@ import math
 
 # ### Define method to split training and testing set
 
-# In[53]:
+# In[27]:
 
 # TODO: Manipulate test_ratio
 def split_train_test(training_set, test_ratio = 0.33):
@@ -67,36 +67,36 @@ def split_train_test(training_set, test_ratio = 0.33):
 
 # ### Load training set matrix
 
-# In[54]:
+# In[28]:
 
-labeled_matrix_training_set = pd.read_csv("../mlOutput/coreTrainingSet_8_3_2018_1.csv")
+labeled_matrix_training_set = pd.read_csv("../mlOutput/geneTrainingSet_8_5_2018_1.csv")
 #labeled_matrix_training_set.columns.values[0] = "sampleId"
 labeled_matrix_training_set = labeled_matrix_training_set.drop([labeled_matrix_training_set.columns[0]], axis = 1)
 labels = list(range(0,5))
 
 
-# In[55]:
+# In[29]:
 
 display(labeled_matrix_training_set.head(25))
 
 
-# In[56]:
+# In[30]:
 
 X = labeled_matrix_training_set.copy().drop(labeled_matrix_training_set.columns[labels], axis = 1)
 y = labeled_matrix_training_set.copy()[labeled_matrix_training_set.columns[labels]]
 
 
-# In[57]:
+# In[31]:
 
 display(X.head())
 
 
-# In[58]:
+# In[32]:
 
 display(y.head(15))
 
 
-# In[59]:
+# In[33]:
 
 from sklearn.model_selection import train_test_split
 
@@ -104,13 +104,13 @@ all_X_TRAIN, all_X_TEST, all_Y_TRAIN, all_Y_TEST = train_test_split(X, y, test_s
 # TODO: train_test must be split on amount of NAs as well!
 
 
-# In[60]:
+# In[34]:
 
 display(all_X_TRAIN.head())
 display(all_Y_TRAIN.head())
 
 
-# In[61]:
+# In[35]:
 
 display(all_X_TEST.head())
 display(all_Y_TEST.head())
@@ -118,7 +118,7 @@ display(all_Y_TEST.head())
 
 # ## Visualize ML Results
 
-# In[62]:
+# In[36]:
 
 def abline(slope, intercept):
     """Plot a line from slope and intercept"""
@@ -128,19 +128,19 @@ def abline(slope, intercept):
     plt.plot(x_vals, y_vals, '--')
 
 
-# In[63]:
+# In[37]:
 
 def retrieve_pipelines(model_name, ml_model):
     Ypipeline = Pipeline([
      ('imputer', Imputer(axis=0,strategy="median")),
-     #('standardizer', StandardScaler()),
-    ('normalizer', MinMaxScaler())
+     ('scaler', StandardScaler()),
+    #('scaler', MinMaxScaler())
     ])
 
     XYpipeline = Pipeline([
             ('imputer', Imputer(axis=0,strategy="median")),
-            #('standardizer', StandardScaler()),
-            #('normalizer', MinMaxScaler()),
+            ('scaler', StandardScaler()),
+            #('scaler', MinMaxScaler()),
             #("pca", decomposition.PCA(n_components=10)),
             (model_name,  ml_model)
     ])
@@ -166,7 +166,7 @@ def train_and_test(Ypipeline, XYpipeline, X_TRAIN, X_TEST, this_y_train, this_y_
     y_test_tr = Ypipeline.transform(this_y_test)
     y_prediction = XYpipeline.predict(X_TEST)
 
-    y_prediction = Ypipeline.named_steps['normalizer'].inverse_transform(y_prediction)
+    y_prediction = Ypipeline.named_steps['scaler'].inverse_transform(y_prediction)
     y_prediction = imputer_inverse_transform(this_y_test, y_prediction)
 
     y_test_np = this_y_test
@@ -205,7 +205,7 @@ def cv_score(XYpipeline, X_TRAIN, this_y_train_tr):
 
 # ### Visualize ML results using Linear Regression
 
-# In[64]:
+# In[38]:
 
 for label in labels:
     X_nonNA, y_nonNA = remove_NAs(X, y, label)
@@ -234,7 +234,7 @@ for label in labels:
 
 # ### Visualize ML results using Random Forest Regressor
 
-# In[71]:
+# In[ ]:
 
 for label in labels:
     X_nonNA, y_nonNA = remove_NAs(X, y, label)
@@ -242,7 +242,7 @@ for label in labels:
     
     display_set(X_TRAIN, X_TEST, Y_TRAIN, Y_TEST)
         
-    Ypipeline, XYpipeline = retrieve_pipelines("rfs_model", RandomForestRegressor(n_estimators=500, max_leaf_nodes=32, n_jobs=8))
+    Ypipeline, XYpipeline = retrieve_pipelines("rfs_model", RandomForestRegressor(n_estimators=500, max_leaf_nodes=16, n_jobs=8))
     
     y_test_np, y_prediction, this_y_train_tr = train_and_test(Ypipeline, XYpipeline, X_TRAIN, X_TEST, Y_TRAIN.values, Y_TEST.values)
 
@@ -263,7 +263,7 @@ for label in labels:
 
 # ### Bootstrap Regression Model
 
-# In[73]:
+# In[39]:
 
 for label in labels:
     X_nonNA, y_nonNA = remove_NAs(X, y, label)
@@ -289,7 +289,7 @@ for label in labels:
 
 # ### Bootstrap Random Forest Model
 
-# In[249]:
+# In[ ]:
 
 for label in labels:
     X_nonNA, y_nonNA = remove_NAs(X, y, label)
