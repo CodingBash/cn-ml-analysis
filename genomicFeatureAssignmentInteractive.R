@@ -27,7 +27,7 @@ aucData <- readRDS("./resources/listSampleTESAUC.RDS")
 #
 setwd("~/Git-Projects/Git-Research-Projects/FACETS_write_files")
 #training_set <- retrieveTrainingSet(loaded_samples = samples, ADcores = ADcores, sample_subdir = "/", reference = "hN31", dir = "output/FACETS_Reference_hN31_7_28_18_2/")
-training_set <- retrieveTrainingSet(loaded_samples = samples, Acores = Acores, Dcores = Dcores, sample_subdir = "/", reference = "hN31", dir = "output/FACETS_Reference_hN31_7_28_18_2/")
+training_set <- retrieveTrainingSet(loaded_samples = samples, Acores = Acores, Dcores = Dcores, sample_subdir = "/", reference = "hN30", dir = "output/FACETS_Reference_hN30_7_28_18_2/")
 training_set$matrix <- attachLabelsToSet(matrix_training_set = training_set$matrix, labelData = aucData)
 
 visualizeUnclusteredHeatmap(training_set$melted)

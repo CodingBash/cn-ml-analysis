@@ -67,36 +67,39 @@ def split_train_test(training_set, test_ratio = 0.33):
 
 # ### Load training set matrix
 
-# In[28]:
+# In[54]:
 
-labeled_matrix_training_set = pd.read_csv("../mlOutput/geneTrainingSet_8_5_2018_1.csv")
+#labeled_matrix_training_set = pd.read_csv("../mlOutput/geneTrainingSet_8_5_2018_1.csv") # Cancer gene feature set
+#labeled_matrix_training_set = pd.read_csv("../mlOutput/coreTrainingSet_8_3_2018_1.csv") # Slicing features on A and D combined
+labeled_matrix_training_set = pd.read_csv("../mlOutput/coreTrainingSet_8_2_2018_2.csv") # Segment features on A and D combined
+#labeled_matrix_training_set = pd.read_csv("../mlOutput/coreTrainingSet_8_2_2018_1.csv") # Segment features on A and D merged
 #labeled_matrix_training_set.columns.values[0] = "sampleId"
 labeled_matrix_training_set = labeled_matrix_training_set.drop([labeled_matrix_training_set.columns[0]], axis = 1)
 labels = list(range(0,5))
 
 
-# In[29]:
+# In[55]:
 
 display(labeled_matrix_training_set.head(25))
 
 
-# In[30]:
+# In[44]:
 
 X = labeled_matrix_training_set.copy().drop(labeled_matrix_training_set.columns[labels], axis = 1)
 y = labeled_matrix_training_set.copy()[labeled_matrix_training_set.columns[labels]]
 
 
-# In[31]:
+# In[45]:
 
 display(X.head())
 
 
-# In[32]:
+# In[46]:
 
 display(y.head(15))
 
 
-# In[33]:
+# In[47]:
 
 from sklearn.model_selection import train_test_split
 
@@ -104,13 +107,13 @@ all_X_TRAIN, all_X_TEST, all_Y_TRAIN, all_Y_TEST = train_test_split(X, y, test_s
 # TODO: train_test must be split on amount of NAs as well!
 
 
-# In[34]:
+# In[48]:
 
 display(all_X_TRAIN.head())
 display(all_Y_TRAIN.head())
 
 
-# In[35]:
+# In[49]:
 
 display(all_X_TEST.head())
 display(all_Y_TEST.head())
@@ -118,7 +121,7 @@ display(all_Y_TEST.head())
 
 # ## Visualize ML Results
 
-# In[36]:
+# In[50]:
 
 def abline(slope, intercept):
     """Plot a line from slope and intercept"""
@@ -128,7 +131,7 @@ def abline(slope, intercept):
     plt.plot(x_vals, y_vals, '--')
 
 
-# In[37]:
+# In[51]:
 
 def retrieve_pipelines(model_name, ml_model):
     Ypipeline = Pipeline([
@@ -205,7 +208,7 @@ def cv_score(XYpipeline, X_TRAIN, this_y_train_tr):
 
 # ### Visualize ML results using Linear Regression
 
-# In[38]:
+# In[52]:
 
 for label in labels:
     X_nonNA, y_nonNA = remove_NAs(X, y, label)
@@ -234,7 +237,7 @@ for label in labels:
 
 # ### Visualize ML results using Random Forest Regressor
 
-# In[ ]:
+# In[41]:
 
 for label in labels:
     X_nonNA, y_nonNA = remove_NAs(X, y, label)
@@ -289,7 +292,7 @@ for label in labels:
 
 # ### Bootstrap Random Forest Model
 
-# In[ ]:
+# In[40]:
 
 for label in labels:
     X_nonNA, y_nonNA = remove_NAs(X, y, label)
