@@ -117,24 +117,30 @@ def abline(slope, intercept):
     plt.plot(x_vals, y_vals, '--')
 
 
-# In[129]:
+# In[159]:
 
 def retrieve_pipelines(model_name, ml_model):
-    Ypipeline = Pipeline([
+    
+    labelPipeline = Pipeline([
      ('imputer', Imputer(axis=0,strategy="median")),
-     #('scaler', StandardScaler()),
+     ('scaler', StandardScaler()),
     #('scaler', MinMaxScaler())
     ])
-
-    XYpipeline = Pipeline([
-            ('imputer', Imputer(axis=0,strategy="median")),
+    
+    modelPipeline = Pipeline([
+            #('imputer', Imputer(axis=0,strategy="median")),
             #('scaler', StandardScaler()),
             #('scaler', MinMaxScaler()),
             #("pca", decomposition.PCA(n_components=10)),
             (model_name,  ml_model)
     ])
     
-    return (Ypipeline, XYpipeline)
+    featureSetPipeline = Pipeline([
+        ('imputer', Imputer(axis=0,strategy="median")),
+        ('scaler', StandardScaler()),
+    ])
+    
+    return (modelPipeline, labelPipeline, featureSetPipeline)
 
 def imputer_inverse_transform(pre_data, post_data):
     na_indices = np.where(np.isnan(pre_data))[0]
@@ -148,17 +154,15 @@ def remove_NAs(X, y, label):
     X_nonNA = X.copy().drop(na_indices)
     return X_nonNA, y_nonNA
     
-def train_and_test(Ypipeline, XYpipeline, X_TRAIN, X_TEST, this_y_train, this_y_test):
-    this_y_train_tr = Ypipeline.fit_transform(this_y_train)
-    XYpipeline.fit(X_TRAIN,this_y_train_tr)
+def train_and_test(labelPipeline, XYpipeline, X_TRAIN, X_TEST, this_y_train, this_y_test):
+    XYpipeline.fit(X_TRAIN,this_y_train)
 
-    y_test_tr = Ypipeline.transform(this_y_test)
     y_prediction = XYpipeline.predict(X_TEST)
-
-    #y_prediction = Ypipeline.named_steps['scaler'].inverse_transform(y_prediction)
+    
+    y_prediction = labelPipeline.named_steps['scaler'].inverse_transform(y_prediction)
     y_prediction = imputer_inverse_transform(this_y_test, y_prediction)
 
-    y_test_np = this_y_test
+    y_test_np = labelPipeline.named_steps['scaler'].inverse_transform(this_y_test)
     y_test_np = y_test_np[~np.isnan(y_test_np)]
     y_prediction = y_prediction[~np.isnan(y_prediction)]
     return (y_test_np, y_prediction, this_y_train_tr)
@@ -194,17 +198,26 @@ def cv_score(XYpipeline, X_TRAIN, this_y_train_tr):
 
 # ### Visualize ML results using Ridge Regression
 
-# In[132]:
+# In[160]:
 
 for label in labels:
+    modelPipeline, labelPipeline, featureSetPipeline  = retrieve_pipelines("ridge_model", Ridge(alpha = 0.5))
+    
+    # Impute samples where label is NA
     X_nonNA, y_nonNA = remove_NAs(X, y, label)
-    X_TRAIN, X_TEST, Y_TRAIN, Y_TEST = train_test_split(X_nonNA, y_nonNA, test_size=0.15)
+    
+    X_nonNA_tr = featureSetPipeline.fit_transform(X_nonNA)
+    y_nonNA_tr = labelPipeline.fit_transform(y_nonNA)
+    
+    X_nonNA_tr = pd.DataFrame(data=X_nonNA_tr, index=X_nonNA.index.values, columns = X_nonNA.columns.values)
+    y_nonNA_tr = pd.DataFrame(data=y_nonNA_tr, index=y_nonNA.index.values, columns = y_nonNA.columns.values)
+    
+    X_TRAIN, X_TEST, Y_TRAIN, Y_TEST = train_test_split(X_nonNA_tr, y_nonNA_tr, test_size=0.15)
+    
     
     display_set(X_TRAIN, X_TEST, Y_TRAIN, Y_TEST)
-        
-    Ypipeline, XYpipeline = retrieve_pipelines("ridge_model", Ridge(alpha = 0.8))
-    
-    y_test_np, y_prediction, this_y_train_tr = train_and_test(Ypipeline, XYpipeline, X_TRAIN, X_TEST, Y_TRAIN.values, Y_TEST.values)
+
+    y_test_np, y_prediction, this_y_train_tr = train_and_test(labelPipeline, XYpipeline, X_TRAIN, X_TEST, Y_TRAIN.values, Y_TEST.values)
 
     rmse, r, t = simple_score(y_test_np, y_prediction)
     
@@ -217,7 +230,7 @@ for label in labels:
     #print("CV Scores: " + str(scores))
     #print("CV Mean: " + str(scores.mean()))
     #print("CV STD: " + str(scores.std()))
-             
+    print(y_prediction)
     visualize(y_test_np, y_prediction)
 
 
