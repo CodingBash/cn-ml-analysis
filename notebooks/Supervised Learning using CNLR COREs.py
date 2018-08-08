@@ -5,7 +5,7 @@
 
 # ### Import Python source code
 
-# In[83]:
+# In[1]:
 
 
 """
@@ -53,39 +53,39 @@ import math
 
 # ### Load training set matrix
 
-# In[193]:
+# In[43]:
 
-#labeled_matrix_training_set = pd.read_csv("../mlOutput/geneTrainingSet_8_5_2018_1.csv") # Cancer gene feature set
+labeled_matrix_training_set = pd.read_csv("../mlOutput/geneTrainingSet_8_5_2018_1.csv") # Cancer gene feature set
 #labeled_matrix_training_set = pd.read_csv("../mlOutput/slicingTrainingSet_8_3_2018_1.csv") # Slicing features on A and D combined
-labeled_matrix_training_set = pd.read_csv("../mlOutput/coreTrainingSet_8_2_2018_2.csv") # Segment features on A and D combined
+#labeled_matrix_training_set = pd.read_csv("../mlOutput/coreTrainingSet_8_2_2018_2.csv") # Segment features on A and D combined
 #labeled_matrix_training_set = pd.read_csv("../mlOutput/coreTrainingSet_8_2_2018_1.csv") # Segment features on A and D merged
 #labeled_matrix_training_set.columns.values[0] = "sampleId"
 labeled_matrix_training_set = labeled_matrix_training_set.drop([labeled_matrix_training_set.columns[0]], axis = 1)
 labels = list(range(0,5))
 
 
-# In[194]:
+# In[44]:
 
 display(labeled_matrix_training_set.head(25))
 
 
-# In[195]:
+# In[45]:
 
 X = labeled_matrix_training_set.copy().drop(labeled_matrix_training_set.columns[labels], axis = 1)
 y = labeled_matrix_training_set.copy()[labeled_matrix_training_set.columns[labels]]
 
 
-# In[196]:
+# In[46]:
 
 display(X.head())
 
 
-# In[197]:
+# In[47]:
 
 display(y.head(15))
 
 
-# In[198]:
+# In[48]:
 
 from sklearn.model_selection import train_test_split
 
@@ -93,13 +93,13 @@ all_X_TRAIN, all_X_TEST, all_Y_TRAIN, all_Y_TEST = train_test_split(X, y, test_s
 # TODO: train_test must be split on amount of NAs as well!
 
 
-# In[199]:
+# In[49]:
 
 display(all_X_TRAIN.head())
 display(all_Y_TRAIN.head())
 
 
-# In[200]:
+# In[50]:
 
 display(all_X_TEST.head())
 display(all_Y_TEST.head())
@@ -107,7 +107,7 @@ display(all_Y_TEST.head())
 
 # ## Visualize ML Results
 
-# In[201]:
+# In[51]:
 
 def abline(slope, intercept):
     """Plot a line from slope and intercept"""
@@ -117,29 +117,40 @@ def abline(slope, intercept):
     plt.plot(x_vals, y_vals, '--')
 
 
-# In[202]:
+# In[52]:
 
 def retrieve_pipelines(model_name, ml_model, scaling_method = "standard"):
     
     labelScaler = StandardScaler() if scaling_method == "standard" else MinMaxScaler()
     featureScaler = StandardScaler() if scaling_method == "standard" else MinMaxScaler()
     
-    labelPipeline = Pipeline([
-     ('imputer', Imputer(axis=0,strategy="median")),
-     ('scaler', labelScaler),
-    ])
+    if scaling_method == "none":
+        labelPipeline = Pipeline([
+         ('imputer', Imputer(axis=0,strategy="median")),
+        ])
+
+
+        featureSetPipeline = Pipeline([
+            ('imputer', Imputer(axis=0,strategy="median")),
+        ])
+    else:
+        labelPipeline = Pipeline([
+         ('imputer', Imputer(axis=0,strategy="median")),
+         ('scaler', labelScaler),
+        ])
+
+
+        featureSetPipeline = Pipeline([
+            ('imputer', Imputer(axis=0,strategy="median")),
+            ('scaler', featureScaler),
+        ])
     
     modelPipeline = Pipeline([
-            #('imputer', Imputer(axis=0,strategy="median")),
-            #('scaler', StandardScaler()),
-            #('scaler', MinMaxScaler()),
-            #("pca", decomposition.PCA(n_components=10)),
-            (model_name,  ml_model)
-    ])
-    
-    featureSetPipeline = Pipeline([
-        ('imputer', Imputer(axis=0,strategy="median")),
-        ('scaler', featureScaler),
+        #('imputer', Imputer(axis=0,strategy="median")),
+        #('scaler', StandardScaler()),
+        #('scaler', MinMaxScaler()),
+        #("pca", decomposition.PCA(n_components=10)),
+        (model_name,  ml_model)
     ])
     
     return (modelPipeline, labelPipeline, featureSetPipeline)
@@ -156,18 +167,22 @@ def remove_NAs(X, y, label):
     X_nonNA = X.copy().drop(na_indices)
     return X_nonNA, y_nonNA
     
-def train_and_test(labelPipeline, XYpipeline, X_TRAIN, X_TEST, this_y_train, this_y_test):
-    XYpipeline.fit(X_TRAIN,this_y_train)
+def train_and_test(labelPipeline, modelPipeline, X_TRAIN, X_TEST, this_y_train, this_y_test, scaling = True):
+    modelPipeline.fit(X_TRAIN,this_y_train)
 
-    y_prediction = XYpipeline.predict(X_TEST)
+    y_prediction = modelPipeline.predict(X_TEST)
     
-    y_prediction = labelPipeline.named_steps['scaler'].inverse_transform(y_prediction)
+    if scaling ==  True:
+        y_prediction = labelPipeline.named_steps['scaler'].inverse_transform(y_prediction)
     y_prediction = imputer_inverse_transform(this_y_test, y_prediction)
 
-    y_test_np = labelPipeline.named_steps['scaler'].inverse_transform(this_y_test)
+    if scaling == True:
+        y_test_np = labelPipeline.named_steps['scaler'].inverse_transform(this_y_test)
+    else:
+        y_test_np = this_y_test
     y_test_np = y_test_np[~np.isnan(y_test_np)]
     y_prediction = y_prediction[~np.isnan(y_prediction)]
-    return (y_test_np, y_prediction, this_y_train_tr)
+    return (y_test_np, y_prediction)
 
 
 def simple_score(y_test_np, y_prediction):
@@ -200,7 +215,7 @@ def cv_score(XYpipeline, X_TRAIN, this_y_train_tr):
 
 # ### Visualize ML results using Ridge Regression
 
-# In[203]:
+# In[53]:
 
 for label in labels:
     modelPipeline, labelPipeline, featureSetPipeline  = retrieve_pipelines("ridge_model", Ridge(alpha = 0.5), "normal")
@@ -214,12 +229,12 @@ for label in labels:
     X_nonNA_tr = pd.DataFrame(data=X_nonNA_tr, index=X_nonNA.index.values, columns = X_nonNA.columns.values)
     y_nonNA_tr = pd.DataFrame(data=y_nonNA_tr, index=y_nonNA.index.values, columns = y_nonNA.columns.values)
     
-    X_TRAIN, X_TEST, Y_TRAIN, Y_TEST = train_test_split(X_nonNA_tr, y_nonNA_tr, test_size=0.15)
+    X_TRAIN, X_TEST, Y_TRAIN, Y_TEST = train_test_split(X_nonNA_tr, y_nonNA_tr, test_size=0.10)
     
     
     display_set(X_TRAIN, X_TEST, Y_TRAIN, Y_TEST)
 
-    y_test_np, y_prediction, this_y_train_tr = train_and_test(labelPipeline, XYpipeline, X_TRAIN, X_TEST, Y_TRAIN.values, Y_TEST.values)
+    y_test_np, y_prediction = train_and_test(labelPipeline, modelPipeline, X_TRAIN, X_TEST, Y_TRAIN.values, Y_TEST.values)
 
     rmse, r, t = simple_score(y_test_np, y_prediction)
     
@@ -276,19 +291,28 @@ for label in labels:
 
 # ### Bootstrap Regression Model
 
-# In[133]:
+# In[57]:
 
 for label in labels:
+    modelPipeline, labelPipeline, featureSetPipeline  = retrieve_pipelines("ridge_model", Ridge(alpha = 0.5), "standard")
+    
+    # Impute samples where label is NA
     X_nonNA, y_nonNA = remove_NAs(X, y, label)
+    
+    X_nonNA_tr = featureSetPipeline.fit_transform(X_nonNA)
+    y_nonNA_tr = labelPipeline.fit_transform(y_nonNA)
+    
+    X_nonNA_tr = pd.DataFrame(data=X_nonNA_tr, index=X_nonNA.index.values, columns = X_nonNA.columns.values)
+    y_nonNA_tr = pd.DataFrame(data=y_nonNA_tr, index=y_nonNA.index.values, columns = y_nonNA.columns.values)
+
     
     all_y_test_np = np.array([])
     all_y_prediction = np.array([])
     for i in range(1,10):
-        X_TRAIN, X_TEST, Y_TRAIN, Y_TEST = train_test_split(X_nonNA, y_nonNA, test_size=0.10)
+        X_TRAIN, X_TEST, Y_TRAIN, Y_TEST = train_test_split(X_nonNA_tr, y_nonNA_tr, test_size=0.05)
 
-        Ypipeline, XYpipeline = retrieve_pipelines("ridge_model", Ridge(alpha = 0.50))
+        y_test_np, y_prediction = train_and_test(labelPipeline, modelPipeline, X_TRAIN, X_TEST, Y_TRAIN.values, Y_TEST.values, scaling = False)
 
-        y_test_np, y_prediction, _ = train_and_test(Ypipeline, XYpipeline, X_TRAIN, X_TEST, Y_TRAIN.values, Y_TEST.values)
         all_y_test_np = np.append(all_y_test_np, y_test_np)
         all_y_prediction = np.append(all_y_prediction, y_prediction)
         
